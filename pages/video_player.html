@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced React Patterns - StreamVault</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fstreamvaul8200back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Header -->
+    <header id="mainHeader" class="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-theme transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4">
+                    <button id="sidebarToggle" class="lg:hidden p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <a href="homepage.html" class="flex items-center space-x-2">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM10 12l5.5-3.5L10 5v7z"/>
+                        </svg>
+                        <span class="text-xl font-bold">StreamVault</span>
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-2xl mx-8 hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search videos, creators, or topics..." class="w-full bg-surface border border-theme rounded-full px-4 py-2 pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 bg-primary rounded-full hover:bg-primary-600 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="md:hidden p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </button>
+                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"/>
+                        </svg>
+                    </button>
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full cursor-pointer hover:scale-105 transition-transform"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 h-full w-64 bg-surface border-r border-theme transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-4 space-y-6">
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="homepage.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="search_results.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <span>Explore</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span>Favorites</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Watch Later</span>
+                </a>
+            </nav>
+
+            <!-- Recently Watched -->
+            <div class="border-t border-theme pt-4">
+                <h3 class="text-sm font-semibold text-text-secondary mb-3">Recently Watched</h3>
+                <div class="space-y-2">
+                    <a href="video_player.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop" alt="Recent video" class="w-10 h-6 rounded object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-medium truncate">JavaScript Tutorial</p>
+                            <p class="text-xs text-text-secondary">CodeMaster</p>
+                        </div>
+                    </a>
+                    <a href="video_player.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                        <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Recent video" class="w-10 h-6 rounded object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-medium truncate">Design Principles</p>
+                            <p class="text-xs text-text-secondary">DesignGuru</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="lg:ml-64 min-h-screen transition-all duration-300">
+        <div class="flex flex-col xl:flex-row gap-6 p-4 sm:p-6 max-w-7xl mx-auto">
+            <!-- Video Player Section -->
+            <div class="flex-1">
+                <!-- Video Player Container -->
+                <div id="videoContainer" class="relative bg-black rounded-lg overflow-hidden mb-4 group">
+                    <div class="aspect-video relative">
+                        <!-- Custom Video Player -->
+                        <video id="videoPlayer" class="w-full h-full object-cover" controls poster="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        <!-- Video Controls Overlay -->
+                        <div id="videoControls" class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute bottom-4 left-4 right-4 pointer-events-auto">
+                                <!-- Progress Bar -->
+                                <div class="mb-4">
+                                    <div id="progressBar" class="w-full bg-white/20 rounded-full h-1 cursor-pointer">
+                                        <div id="progressFill" class="bg-primary h-1 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Control Buttons -->
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <button id="playPauseBtn" class="text-white hover:text-primary transition-colors">
+                                            <svg id="playIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <svg id="pauseIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                                            </svg>
+                                        </button>
+                                        <div class="flex items-center space-x-2">
+                                            <button id="volumeBtn" class="text-white hover:text-primary transition-colors">
+                                                <svg id="volumeIcon" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                                </svg>
+                                            </button>
+                                            <span id="timeDisplay" class="text-white text-sm">0:00 / 0:00</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <!-- Speed Selector -->
+                                        <div class="relative">
+                                            <button id="speedBtn" class="text-white hover:text-primary transition-colors text-sm px-2 py-1 rounded bg-black/40">
+                                                1x
+                                            </button>
+                                            <div id="speedMenu" class="absolute bottom-full right-0 mb-2 bg-surface rounded-lg shadow-modal p-2 hidden">
+                                                <button class="block w-full text-left px-3 py-1 text-sm hover:bg-surface-light/10 rounded" data-speed="2">2x</button>
+                                                <button class="block w-full text-left px-3 py-1 text-sm hover:bg-surface-light/10 rounded" data-speed="1.5">1.5x</button>
+                                                <button class="block w-full text-left px-3 py-1 text-sm hover:bg-surface-light/10 rounded bg-primary/20" data-speed="1">1x</button>
+                                                <button class="block w-full text-left px-3 py-1 text-sm hover:bg-surface-light/10 rounded" data-speed="0.75">0.75x</button>
+                                                <button class="block w-full text-left px-3 py-1 text-sm hover:bg-surface-light/10 rounded" data-speed="0.5">0.5x</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Picture in Picture -->
+                                        <button id="pipBtn" class="text-white hover:text-primary transition-colors">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h11a1 1 0 011 1v11a1 1 0 01-1 1h-2M7 4H5a1 1 0 00-1 1v11a1 1 0 001 1h11a1 1 0 001-1V9M7 4h8v8H7V4z"/>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Theater Mode -->
+                                        <button id="theaterBtn" class="text-white hover:text-primary transition-colors">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Fullscreen -->
+                                        <button id="fullscreenBtn" class="text-white hover:text-primary transition-colors">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Info -->
+                <div class="space-y-4">
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold mb-2">Advanced React Patterns: Building Scalable Applications</h1>
+                        <div class="flex flex-wrap items-center gap-4 text-text-secondary text-sm">
+                            <span>1,234,567 views</span>
+                            <span>•</span>
+                            <span>Sep 24, 2025</span>
+                            <div class="flex items-center space-x-4 ml-auto">
+                                <button class="flex items-center space-x-2 px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                    </svg>
+                                    <span>12K</span>
+                                </button>
+                                <button class="flex items-center space-x-2 px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018c.163 0 .326.02.485.06L17 4m-7 10v2a2 2 0 002 2h.095c.5 0 .905-.405.905-.905 0-.714.211-1.412.608-2.006L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"/>
+                                    </svg>
+                                    <span>234</span>
+                                </button>
+                                <button id="shareBtn" class="flex items-center space-x-2 px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                                    </svg>
+                                    <span>Share</span>
+                                </button>
+                                <button class="flex items-center space-x-2 px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Channel Info (Subscribe button removed) -->
+                    <div class="flex items-center p-4 bg-surface rounded-lg">
+                        <div class="flex items-center space-x-4">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=100&auto=format&fit=crop" alt="TechMaster Pro" class="w-12 h-12 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div>
+                                <h3 class="font-semibold">TechMaster Pro</h3>
+                                <p class="text-text-secondary text-sm">Content Creator</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="bg-surface rounded-lg p-4">
+                        <div id="description" class="space-y-3">
+                            <p class="text-sm leading-relaxed">
+                                Learn advanced React patterns that will take your applications to the next level. In this comprehensive tutorial, we'll explore compound components, render props, higher-order components, and custom hooks.
+                            </p>
+                            <div id="fullDescription" class="hidden space-y-3">
+                                <p class="text-sm leading-relaxed">
+                                    🎯 What you'll learn:<br />
+                                    • Compound Components Pattern<br />
+                                    • Render Props Pattern<br />
+                                    • Higher-Order Components (HOCs)<br />
+                                    • Custom Hooks<br />
+                                    • Context API Best Practices<br />
+                                    • Performance Optimization Techniques
+                                </p>
+                                <p class="text-sm leading-relaxed">
+                                    📚 Resources mentioned in this video:<br />
+                                    • React Documentation: https://reactjs.org<br />
+                                    • Source Code: https://github.com/techmaster-pro/react-patterns<br />
+                                    • Follow me on Twitter: @techmasterpro
+                                </p>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="text-primary text-sm">#React</span>
+                                    <span class="text-primary text-sm">#JavaScript</span>
+                                    <span class="text-primary text-sm">#WebDevelopment</span>
+                                    <span class="text-primary text-sm">#Programming</span>
+                                    <span class="text-primary text-sm">#Tutorial</span>
+                                </div>
+                            </div>
+                            <button id="showMoreBtn" class="text-text-secondary hover:text-text-primary text-sm font-medium transition-colors">
+                                Show more
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Videos Sidebar -->
+            <div class="w-full xl:w-96 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">Up Next</h2>
+                    <button class="text-text-secondary hover:text-text-primary transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Autoplay Toggle -->
+                <div class="flex items-center justify-between p-3 bg-surface rounded-lg">
+                    <span class="text-sm font-medium">Autoplay</span>
+                    <button id="autoplayToggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors">
+                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6"></span>
+                    </button>
+                </div>
+
+                <!-- Related Videos List -->
+                <div class="space-y-3">
+                    <!-- Related Video 1 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex space-x-3 p-2 rounded-lg hover:bg-surface transition-colors">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Video thumbnail" class="w-40 h-24 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">8:45</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                    UI/UX Design Principles That Actually Work in 2025
+                                </h3>
+                                <p class="text-text-secondary text-xs mb-1">DesignGuru</p>
+                                <div class="flex items-center text-text-secondary text-xs space-x-1">
+                                    <span>856K views</span>
+                                    <span>•</span>
+                                    <span>1 week ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Video 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex space-x-3 p-2 rounded-lg hover:bg-surface transition-colors">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://images.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png?auto=compress&cs=tinysrgb&w=300" alt="Video thumbnail" class="w-40 h-24 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">15:22</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                    Python for Beginners: Complete Course 2025
+                                </h3>
+                                <p class="text-text-secondary text-xs mb-1">CodeAcademy</p>
+                                <div class="flex items-center text-text-secondary text-xs space-x-1">
+                                    <span>2.1M views</span>
+                                    <span>•</span>
+                                    <span>3 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Video 3 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex space-x-3 p-2 rounded-lg hover:bg-surface transition-colors">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=300&auto=format&fit=crop" alt="Video thumbnail" class="w-40 h-24 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">9:18</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                    Digital Marketing Strategies for 2025
+                                </h3>
+                                <p class="text-text-secondary text-xs mb-1">MarketingPro</p>
+                                <div class="flex items-center text-text-secondary text-xs space-x-1">
+                                    <span>634K views</span>
+                                    <span>•</span>
+                                    <span>5 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Video 4 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex space-x-3 p-2 rounded-lg hover:bg-surface transition-colors">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Video thumbnail" class="w-40 h-24 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">7:32</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                    Machine Learning Explained Simply
+                                </h3>
+                                <p class="text-text-secondary text-xs mb-1">AI Academy</p>
+                                <div class="flex items-center text-text-secondary text-xs space-x-1">
+                                    <span>445K views</span>
+                                    <span>•</span>
+                                    <span>1 day ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Video 5 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex space-x-3 p-2 rounded-lg hover:bg-surface transition-colors">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://images.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg?auto=compress&cs=tinysrgb&w=300" alt="Video thumbnail" class="w-40 h-24 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">11:45</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                    CSS Grid vs Flexbox: When to Use What
+                                </h3>
+                                <p class="text-text-secondary text-xs mb-1">WebDev Simplified</p>
+                                <div class="flex items-center text-text-secondary text-xs space-x-1">
+                                    <span>789K views</span>
+                                    <span>•</span>
+                                    <span>4 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Video 6 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex space-x-3 p-2 rounded-lg hover:bg-surface transition-colors">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=300&auto=format&fit=crop" alt="Video thumbnail" class="w-40 h-24 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">13:27</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                    Data Visualization with D3.js
+                                </h3>
+                                <p class="text-text-secondary text-xs mb-1">DataViz Pro</p>
+                                <div class="flex items-center text-text-secondary text-xs space-x-1">
+                                    <span>312K views</span>
+                                    <span>•</span>
+                                    <span>1 week ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mini Player -->
+    <div id="miniPlayer" class="fixed bottom-4 right-4 w-80 bg-surface rounded-lg shadow-modal hidden z-50">
+        <div class="relative">
+            <div class="aspect-video bg-black rounded-t-lg overflow-hidden">
+                <video class="w-full h-full object-cover" controls>
+                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="p-3">
+                <h4 class="font-medium text-sm mb-1 line-clamp-2">Advanced React Patterns: Building Scalable Applications</h4>
+                <p class="text-text-secondary text-xs">TechMaster Pro</p>
+            </div>
+            <button id="closeMiniPlayer" class="absolute top-2 right-2 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center text-white hover:bg-black/80 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-surface rounded-lg max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Share Video</h3>
+                <button id="closeShareModal" class="text-text-secondary hover:text-text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3 p-3 bg-background rounded-lg">
+                    <input type="text" value="https://streamvault.com/watch?v=dQw4w9WgXcQ" class="flex-1 bg-transparent text-sm" readonly />
+                    <button id="copyLinkBtn" class="text-primary hover:text-primary-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-3">
+                    <button class="flex flex-col items-center p-3 rounded-lg hover:bg-background transition-colors">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mb-2">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs">Twitter</span>
+                    </button>
+                    <button class="flex flex-col items-center p-3 rounded-lg hover:bg-background transition-colors">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mb-2">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs">Facebook</span>
+                    </button>
+                    <button class="flex flex-col items-center p-3 rounded-lg hover:bg-background transition-colors">
+                        <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center mb-2">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs">LinkedIn</span>
+                    </button>
+                    <button class="flex flex-col items-center p-3 rounded-lg hover:bg-background transition-colors">
+                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mb-2">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs">WhatsApp</span>
+                    </button>
+                </div>
+                
+                <div class="pt-4 border-t border-theme">
+                    <label class="block text-sm font-medium mb-2">Embed Code</label>
+                    <textarea class="w-full bg-background border border-theme rounded-lg p-3 text-sm h-20 resize-none" readonly>&lt;video controls&gt;&lt;source src="https://streamvault.com/video/sample.mp4" type="video/mp4"&gt;&lt;/video&gt;</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"></div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.classList.toggle('light', savedTheme === 'light');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('light');
+            const newTheme = html.classList.contains('light') ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) {
+                    window.location.href = `search_results.html?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+        // Video Player Controls
+        const videoPlayer = document.getElementById('videoPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const volumeBtn = document.getElementById('volumeBtn');
+        const speedBtn = document.getElementById('speedBtn');
+        const speedMenu = document.getElementById('speedMenu');
+
+        // Play/Pause functionality
+        playPauseBtn.addEventListener('click', () => {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                videoPlayer.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        });
+
+        // Progress bar update
+        videoPlayer.addEventListener('timeupdate', () => {
+            if (videoPlayer.duration) {
+                const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+                progressFill.style.width = `${progress}%`;
+                
+                const currentMinutes = Math.floor(videoPlayer.currentTime / 60);
+                const currentSeconds = Math.floor(videoPlayer.currentTime % 60);
+                const totalMinutes = Math.floor(videoPlayer.duration / 60);
+                const totalSeconds = Math.floor(videoPlayer.duration % 60);
+                
+                timeDisplay.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')} / ${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`;
+            }
+        });
+
+        // Progress bar click
+        progressBar.addEventListener('click', (e) => {
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            videoPlayer.currentTime = percent * videoPlayer.duration;
+        });
+
+        // Volume control
+        volumeBtn.addEventListener('click', () => {
+            videoPlayer.muted = !videoPlayer.muted;
+        });
+
+        // Speed control
+        speedBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            speedMenu.classList.toggle('hidden');
+        });
+
+        speedMenu.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const speed = parseFloat(e.target.dataset.speed);
+                videoPlayer.playbackRate = speed;
+                speedBtn.textContent = `${speed}x`;
+                speedMenu.classList.add('hidden');
+                
+                // Remove active class from all buttons
+                speedMenu.querySelectorAll('button').forEach(btn => {
+                    btn.classList.remove('bg-primary/20');
+                });
+                // Add active class to selected button
+                e.target.classList.add('bg-primary/20');
+            }
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', () => {
+            speedMenu.classList.add('hidden');
+        });
+
+        // Theater Mode
+        const theaterBtn = document.getElementById('theaterBtn');
+        const mainContent = document.getElementById('mainContent');
+        const mainHeader = document.getElementById('mainHeader');
+        let isTheaterMode = false;
+
+        theaterBtn.addEventListener('click', () => {
+            isTheaterMode = !isTheaterMode;
+            if (isTheaterMode) {
+                mainContent.classList.remove('lg:ml-64');
+                mainHeader.classList.add('hidden');
+                sidebar.classList.add('-translate-x-full');
+                document.body.classList.add('theater-mode');
+            } else {
+                mainContent.classList.add('lg:ml-64');
+                mainHeader.classList.remove('hidden');
+                sidebar.classList.remove('-translate-x-full');
+                document.body.classList.remove('theater-mode');
+            }
+        });
+
+        // Picture in Picture
+        const pipBtn = document.getElementById('pipBtn');
+        const miniPlayer = document.getElementById('miniPlayer');
+        const closeMiniPlayer = document.getElementById('closeMiniPlayer');
+
+        pipBtn.addEventListener('click', async () => {
+            if (document.pictureInPictureEnabled && !videoPlayer.disablePictureInPicture) {
+                try {
+                    if (document.pictureInPictureElement) {
+                        await document.exitPictureInPicture();
+                    } else {
+                        await videoPlayer.requestPictureInPicture();
+                    }
+                } catch (error) {
+                    // Fallback to mini player
+                    miniPlayer.classList.remove('hidden');
+                }
+            } else {
+                miniPlayer.classList.remove('hidden');
+            }
+        });
+
+        closeMiniPlayer.addEventListener('click', () => {
+            miniPlayer.classList.add('hidden');
+        });
+
+        // Autoplay Toggle
+        const autoplayToggle = document.getElementById('autoplayToggle');
+        let isAutoplayOn = true;
+
+        autoplayToggle.addEventListener('click', () => {
+            isAutoplayOn = !isAutoplayOn;
+            const toggleSwitch = autoplayToggle.querySelector('span');
+            
+            if (isAutoplayOn) {
+                autoplayToggle.classList.remove('bg-gray-600');
+                autoplayToggle.classList.add('bg-primary');
+                toggleSwitch.classList.remove('translate-x-1');
+                toggleSwitch.classList.add('translate-x-6');
+            } else {
+                autoplayToggle.classList.remove('bg-primary');
+                autoplayToggle.classList.add('bg-gray-600');
+                toggleSwitch.classList.remove('translate-x-6');
+                toggleSwitch.classList.add('translate-x-1');
+            }
+        });
+
+        // Description Show More/Less
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const fullDescription = document.getElementById('fullDescription');
+        let isDescriptionExpanded = false;
+
+        showMoreBtn.addEventListener('click', () => {
+            isDescriptionExpanded = !isDescriptionExpanded;
+            if (isDescriptionExpanded) {
+                fullDescription.classList.remove('hidden');
+                showMoreBtn.textContent = 'Show less';
+            } else {
+                fullDescription.classList.add('hidden');
+                showMoreBtn.textContent = 'Show more';
+            }
+        });
+
+        // Share Modal
+        const shareModal = document.getElementById('shareModal');
+        const closeShareModal = document.getElementById('closeShareModal');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        const shareBtn = document.getElementById('shareBtn');
+
+        shareBtn.addEventListener('click', () => {
+            shareModal.classList.remove('hidden');
+        });
+
+        closeShareModal.addEventListener('click', () => {
+            shareModal.classList.add('hidden');
+        });
+
+        shareModal.addEventListener('click', (e) => {
+            if (e.target === shareModal) {
+                shareModal.classList.add('hidden');
+            }
+        });
+
+        // Copy link functionality
+        copyLinkBtn.addEventListener('click', () => {
+            const linkInput = document.querySelector('#shareModal input[type="text"]');
+            linkInput.select();
+            document.execCommand('copy');
+            
+            // Show feedback
+            const originalIcon = copyLinkBtn.innerHTML;
+            copyLinkBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+            setTimeout(() => {
+                copyLinkBtn.innerHTML = originalIcon;
+            }, 2000);
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Only handle shortcuts when not typing in input fields
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            switch(e.key) {
+                case ' ': // Spacebar - Play/Pause
+                    e.preventDefault();
+                    playPauseBtn.click();
+                    break;
+                case 'ArrowLeft': // Left Arrow - Seek backward
+                    e.preventDefault();
+                    videoPlayer.currentTime -= 10;
+                    break;
+                case 'ArrowRight': // Right Arrow - Seek forward
+                    e.preventDefault();
+                    videoPlayer.currentTime += 10;
+                    break;
+                case 'ArrowUp': // Up Arrow - Volume up
+                    e.preventDefault();
+                    videoPlayer.volume = Math.min(1, videoPlayer.volume + 0.1);
+                    break;
+                case 'ArrowDown': // Down Arrow - Volume down
+                    e.preventDefault();
+                    videoPlayer.volume = Math.max(0, videoPlayer.volume - 0.1);
+                    break;
+                case 'f': // F - Fullscreen
+                case 'F':
+                    e.preventDefault();
+                    document.getElementById('fullscreenBtn').click();
+                    break;
+                case 't': // T - Theater mode
+                case 'T':
+                    e.preventDefault();
+                    theaterBtn.click();
+                    break;
+                case 'm': // M - Mute
+                case 'M':
+                    e.preventDefault();
+                    volumeBtn.click();
+                    break;
+            }
+        });
+
+        // Fullscreen functionality
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const videoContainer = document.getElementById('videoContainer');
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                videoContainer.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        // Related video clicks
+        document.querySelectorAll('.group.cursor-pointer').forEach(card => {
+            card.addEventListener('click', () => {
+                // In a real implementation, this would load the new video
+                // For now, we'll just reload the page to simulate video change
+                window.location.reload();
+            });
+        });
+
+        // Save viewing history
+        function saveToHistory(videoData) {
+            let history = JSON.parse(localStorage.getItem('viewingHistory') || '[]');
+            history.unshift(videoData);
+            history = history.slice(0, 10); // Keep only last 10 items
+            localStorage.setItem('viewingHistory', JSON.stringify(history));
+        }
+
+        // Save current video to history
+        const currentVideo = {
+            title: 'Advanced React Patterns: Building Scalable Applications',
+            creator: 'TechMaster Pro',
+            thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop',
+            timestamp: Date.now()
+        };
+        saveToHistory(currentVideo);
+
+        // Escape key to exit theater mode or close modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (isTheaterMode) {
+                    theaterBtn.click();
+                }
+                if (!shareModal.classList.contains('hidden')) {
+                    shareModal.classList.add('hidden');
+                }
+                if (!miniPlayer.classList.contains('hidden')) {
+                    miniPlayer.classList.add('hidden');
+                }
+            }
+        });
+
+        // Responsive video controls
+        function handleResize() {
+            const isMobile = window.innerWidth < 768;
+            const videoControls = document.getElementById('videoControls');
+            
+            if (isMobile) {
+                // Adjust controls for mobile
+                videoControls.classList.add('mobile-controls');
+            } else {
+                videoControls.classList.remove('mobile-controls');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
