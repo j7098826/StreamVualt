@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamVault - Discover Amazing Content</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fstreamvaul8200back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-theme">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4">
+                    <button id="sidebarToggle" class="lg:hidden p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <a href="homepage.html" class="flex items-center space-x-2">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM10 12l5.5-3.5L10 5v7z"/>
+                        </svg>
+                        <span class="text-xl font-bold">StreamVault</span>
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-2xl mx-8 hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search videos, creators, or topics..." class="w-full bg-surface border border-theme rounded-full px-4 py-2 pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 bg-primary rounded-full hover:bg-primary-600 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="md:hidden p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </button>
+                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"/>
+                        </svg>
+                    </button>
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full cursor-pointer hover:scale-105 transition-transform"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 h-full w-64 bg-surface border-r border-theme transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-4 space-y-6">
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="homepage.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="search_results.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <span>Explore</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span>Favorites</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Watch Later</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    <span>Playlists</span>
+                </a>
+            </nav>
+
+            <!-- Recently Watched -->
+            <div class="border-t border-theme pt-4">
+                <h3 class="text-sm font-semibold text-text-secondary mb-3">Recently Watched</h3>
+                <div class="space-y-2">
+                    <a href="video_player.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop" alt="Recent video" class="w-10 h-6 rounded object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-medium truncate">JavaScript Tutorial</p>
+                            <p class="text-xs text-text-secondary">CodeMaster</p>
+                        </div>
+                    </a>
+                    <a href="video_player.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                        <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Recent video" class="w-10 h-6 rounded object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-medium truncate">Design Principles</p>
+                            <p class="text-xs text-text-secondary">DesignGuru</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 min-h-screen">
+
+        <!-- Category Quick Access -->
+        <section class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-wrap gap-3">
+                <button class="px-4 py-2 bg-primary text-white rounded-full font-medium hover:bg-primary-600 transition-colors">All</button>
+                <button class="px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full font-medium transition-colors">Technology</button>
+                <button class="px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full font-medium transition-colors">Design</button>
+                <button class="px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full font-medium transition-colors">Programming</button>
+                <button class="px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full font-medium transition-colors">Business</button>
+                <button class="px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full font-medium transition-colors">Creative</button>
+                <button class="px-4 py-2 bg-surface hover:bg-surface-light/20 rounded-full font-medium transition-colors">Education</button>
+            </div>
+        </section>
+
+        <!-- Trending Videos -->
+        <section class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Trending Now</h2>
+                <a href="search_results.html" class="text-primary hover:text-primary-600 font-medium transition-colors">View All</a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Video Card 1 -->
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">12:34</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            Advanced React Patterns: Building Scalable Applications
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">TechMaster Pro</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>1.2M views</span>
+                            <span>•</span>
+                            <span>2 days ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">8:45</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            UI/UX Design Principles That Actually Work in 2025
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">DesignGuru</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>856K views</span>
+                            <span>•</span>
+                            <span>1 week ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">15:22</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            Python for Beginners: Complete Course 2025
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">CodeAcademy</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>2.1M views</span>
+                            <span>•</span>
+                            <span>3 days ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Card 4 -->
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">9:18</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            Digital Marketing Strategies for 2025
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">MarketingPro</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>634K views</span>
+                            <span>•</span>
+                            <span>5 days ago</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"></div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.classList.toggle('light', savedTheme === 'light');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('light');
+            const newTheme = html.classList.contains('light') ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) {
+                    window.location.href = `search_results.html?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+        // Category filter functionality
+        const categoryButtons = document.querySelectorAll('section:nth-of-type(2) button');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-surface', 'hover:bg-surface-light/20');
+                });
+                button.classList.remove('bg-surface', 'hover:bg-surface-light/20');
+                button.classList.add('bg-primary', 'text-white');
+            });
+        });
+
+        // Lazy loading for images
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        }
+
+        // Save viewing history to localStorage
+        function saveToHistory(videoData) {
+            let history = JSON.parse(localStorage.getItem('viewingHistory') || '[]');
+            history.unshift(videoData);
+            history = history.slice(0, 10); // Keep only last 10 items
+            localStorage.setItem('viewingHistory', JSON.stringify(history));
+        }
+
+        // Add click handlers for video cards
+        document.querySelectorAll('.group.cursor-pointer').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'A') {
+                    const title = card.querySelector('h3').textContent;
+                    const creator = card.querySelector('.text-text-secondary').textContent;
+                    const thumbnail = card.querySelector('img').src;
+                    
+                    saveToHistory({ title, creator, thumbnail, timestamp: Date.now() });
+                    window.location.href = 'video_player.html';
+                }
+            });
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
