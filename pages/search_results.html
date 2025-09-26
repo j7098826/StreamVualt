@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Results - StreamVault</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fstreamvaul8200back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-theme">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4">
+                    <button id="sidebarToggle" class="lg:hidden p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <a href="homepage.html" class="flex items-center space-x-2">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM10 12l5.5-3.5L10 5v7z"/>
+                        </svg>
+                        <span class="text-xl font-bold">StreamVault</span>
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-2xl mx-8 hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search videos, creators, or topics..." class="w-full bg-surface border border-theme rounded-full px-4 py-2 pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 bg-primary rounded-full hover:bg-primary-600 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                        <!-- Autocomplete Dropdown -->
+                        <div id="autocompleteDropdown" class="absolute top-full left-0 right-0 bg-surface border border-theme rounded-lg mt-1 shadow-modal hidden z-50">
+                            <div class="p-2">
+                                <div class="text-xs text-text-secondary mb-2 px-2">Recent Searches</div>
+                                <div id="recentSearches" class="space-y-1"></div>
+                                <div class="text-xs text-text-secondary mb-2 px-2 mt-3">Suggestions</div>
+                                <div id="searchSuggestions" class="space-y-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="md:hidden p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </button>
+                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2 rounded-lg hover:bg-surface transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"/>
+                        </svg>
+                    </button>
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full cursor-pointer hover:scale-105 transition-transform"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 h-full w-64 bg-surface border-r border-theme transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-4 space-y-6">
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="homepage.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="search_results.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <span>Explore</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span>Favorites</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Watch Later</span>
+                </a>
+                <a href="javascript:void(0)" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-surface-light/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    <span>Playlists</span>
+                </a>
+            </nav>
+
+            <!-- Saved Searches -->
+            <div class="border-t border-theme pt-4">
+                <h3 class="text-sm font-semibold text-text-secondary mb-3">Saved Searches</h3>
+                <div id="savedSearches" class="space-y-2">
+                    <a href="javascript:void(0)" class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-light/10 transition-colors group">
+                        <span class="text-xs truncate">JavaScript tutorials</span>
+                        <button class="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-primary transition-all">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </a>
+                    <a href="javascript:void(0)" class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-light/10 transition-colors group">
+                        <span class="text-xs truncate">React hooks</span>
+                        <button class="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-primary transition-all">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 min-h-screen">
+<!-- Search Header -->
+<section class="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-theme">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold mb-2">Explore</h1>
+            <p class="text-text-secondary" id="searchResultsCount">Discover amazing content from creators worldwide</p>
+        </div>
+    </div>
+</section>
+
+        <!-- Video Results -->
+        <section class="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div id="searchResults" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Video Result 1 -->
+                <div class="group cursor-pointer search-result-card" data-category="education" data-duration="medium" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">12:34</div>
+                        <div class="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">HD</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            JavaScript ES6 Features: Complete Tutorial Guide
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">CodeMaster Pro</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>1.2M views</span>
+                            <span>•</span>
+                            <span>2 days ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 2 -->
+                <div class="group cursor-pointer search-result-card" data-category="programming" data-duration="long" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">25:18</div>
+                        <div class="absolute top-2 left-2 bg-secondary text-white text-xs px-2 py-1 rounded">CC</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            Advanced JavaScript Patterns for Beginners
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">WebDev Academy</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>856K views</span>
+                            <span>•</span>
+                            <span>1 week ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 3 -->
+                <div class="group cursor-pointer search-result-card" data-category="education" data-duration="short" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">3:45</div>
+                        <div class="absolute top-2 left-2 bg-accent text-black text-xs px-2 py-1 rounded">4K</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            JavaScript Quick Tips: 5 Essential Tricks
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">QuickCode</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>445K views</span>
+                            <span>•</span>
+                            <span>3 days ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 4 -->
+                <div class="group cursor-pointer search-result-card" data-category="technology" data-duration="medium" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">15:22</div>
+                        <div class="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">HD</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            Modern JavaScript Frameworks: Complete Guide
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">TechGuru</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>2.1M views</span>
+                            <span>•</span>
+                            <span>5 days ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 5 -->
+                <div class="group cursor-pointer search-result-card" data-category="programming" data-duration="medium" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">18:45</div>
+                        <div class="absolute top-2 left-2 bg-secondary text-white text-xs px-2 py-1 rounded">CC</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            JavaScript Debugging: Professional Techniques
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">DevMaster</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>634K views</span>
+                            <span>•</span>
+                            <span>1 day ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 6 -->
+                <div class="group cursor-pointer search-result-card" data-category="education" data-duration="long" data-quality="4k">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">32:15</div>
+                        <div class="absolute top-2 left-2 bg-accent text-black text-xs px-2 py-1 rounded">4K</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            Complete JavaScript Course: From Zero to Hero
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">CodeAcademy Pro</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>3.2M views</span>
+                            <span>•</span>
+                            <span>1 week ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 7 -->
+                <div class="group cursor-pointer search-result-card" data-category="technology" data-duration="short" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">7:32</div>
+                        <div class="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">HD</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            JavaScript vs TypeScript: Quick Comparison
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">TechComparison</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>789K views</span>
+                            <span>•</span>
+                            <span>4 days ago</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Video Result 8 -->
+                <div class="group cursor-pointer search-result-card" data-category="programming" data-duration="medium" data-quality="hd">
+                    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+                        <img src="https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMJA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">14:28</div>
+                        <div class="absolute top-2 left-2 bg-secondary text-white text-xs px-2 py-1 rounded">CC</div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="video_player.html" class="block">
+                        <h3 class="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                            JavaScript Performance Optimization Guide
+                        </h3>
+                        <p class="text-text-secondary text-sm mb-1">PerformancePro</p>
+                        <div class="flex items-center text-text-secondary text-xs space-x-2">
+                            <span>567K views</span>
+                            <span>•</span>
+                            <span>6 days ago</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- No Results State (Hidden by default) -->
+            <div id="noResultsState" class="text-center py-16 hidden">
+                <div class="max-w-md mx-auto">
+                    <svg class="w-24 h-24 mx-auto text-text-secondary mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-4">No results found</h3>
+                    <p class="text-text-secondary mb-6">We couldn't find any videos matching your search. Try adjusting your search terms.</p>
+                    
+                    <div class="space-y-4">
+                        <h4 class="font-medium">Try searching for:</h4>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <button class="px-3 py-1 bg-surface hover:bg-surface-light/20 rounded-full text-sm transition-colors">React tutorials</button>
+                            <button class="px-3 py-1 bg-surface hover:bg-surface-light/20 rounded-full text-sm transition-colors">Python basics</button>
+                            <button class="px-3 py-1 bg-surface hover:bg-surface-light/20 rounded-full text-sm transition-colors">Web development</button>
+                            <button class="px-3 py-1 bg-surface hover:bg-surface-light/20 rounded-full text-sm transition-colors">CSS animations</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button id="loadMoreBtn" class="px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-colors">
+                    Load More Results
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"></div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.classList.toggle('light', savedTheme === 'light');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('light');
+            const newTheme = html.classList.contains('light') ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+        const recentSearches = document.getElementById('recentSearches');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+
+        // Mock data for suggestions
+        const suggestions = [
+            'JavaScript tutorials for beginners',
+            'JavaScript ES6 features',
+            'JavaScript frameworks comparison',
+            'JavaScript debugging techniques',
+            'JavaScript performance optimization',
+            'JavaScript async await',
+            'JavaScript DOM manipulation',
+            'JavaScript testing basics'
+        ];
+
+        // Load recent searches from localStorage
+        function loadRecentSearches() {
+            const recent = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+            recentSearches.innerHTML = '';
+            recent.slice(0, 3).forEach(search => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center justify-between px-2 py-1 hover:bg-surface-light/10 rounded cursor-pointer';
+                item.innerHTML = `
+                    <span class="text-sm truncate">${search}</span>
+                    <button class="text-text-secondary hover:text-primary ml-2">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                `;
+                recentSearches.appendChild(item);
+            });
+        }
+
+        // Show autocomplete suggestions
+        function showSuggestions(query) {
+            const filtered = suggestions.filter(s => 
+                s.toLowerCase().includes(query.toLowerCase())
+            ).slice(0, 5);
+            
+            searchSuggestions.innerHTML = '';
+            filtered.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.className = 'px-2 py-1 hover:bg-surface-light/10 rounded cursor-pointer';
+                item.innerHTML = `<span class="text-sm">${suggestion}</span>`;
+                item.addEventListener('click', () => {
+                    searchInput.value = suggestion;
+                    performSearch(suggestion);
+                    autocompleteDropdown.classList.add('hidden');
+                });
+                searchSuggestions.appendChild(item);
+            });
+        }
+
+        // Search input events
+        searchInput.addEventListener('focus', () => {
+            loadRecentSearches();
+            showSuggestions(searchInput.value);
+            autocompleteDropdown.classList.remove('hidden');
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            if (query.length > 0) {
+                showSuggestions(query);
+            } else {
+                loadRecentSearches();
+            }
+        });
+
+        searchInput.addEventListener('blur', (e) => {
+            // Delay hiding to allow clicks on suggestions
+            setTimeout(() => {
+                autocompleteDropdown.classList.add('hidden');
+            }, 200);
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) {
+                    performSearch(query);
+                    autocompleteDropdown.classList.add('hidden');
+                }
+            }
+        });
+
+        // Perform search function
+        function performSearch(query) {
+            // Save to recent searches
+            let recent = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+            recent = recent.filter(s => s !== query);
+            recent.unshift(query);
+            recent = recent.slice(0, 10);
+            localStorage.setItem('recentSearches', JSON.stringify(recent));
+
+            // Update search results description
+            document.getElementById('searchResultsCount').textContent = `Found results for "${query}"`;
+        }
+
+        // Sort functionality
+        const sortSelect = document.getElementById('sortSelect');
+        sortSelect.addEventListener('change', (e) => {
+            const sortBy = e.target.value;
+            // Implement sorting logic here
+            console.log('Sorting by:', sortBy);
+        });
+
+        // Save search functionality
+        const saveSearchBtn = document.getElementById('saveSearchBtn');
+        saveSearchBtn.addEventListener('click', () => {
+            const currentQuery = searchInput.value || 'Current search';
+            let savedSearches = JSON.parse(localStorage.getItem('savedSearches') || '[]');
+            
+            if (!savedSearches.includes(currentQuery)) {
+                savedSearches.unshift(currentQuery);
+                savedSearches = savedSearches.slice(0, 5); // Keep only 5 saved searches
+                localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+                
+                // Visual feedback
+                saveSearchBtn.innerHTML = `
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                    </svg>
+                    <span class="text-sm">Saved!</span>
+                `;
+                
+                setTimeout(() => {
+                    saveSearchBtn.innerHTML = `
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                        <span class="text-sm">Save Search</span>
+                    `;
+                }, 2000);
+            }
+        });
+
+        // Load more functionality
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        loadMoreBtn.addEventListener('click', () => {
+            // Simulate loading more results
+            loadMoreBtn.textContent = 'Loading...';
+            loadMoreBtn.disabled = true;
+            
+            setTimeout(() => {
+                loadMoreBtn.textContent = 'Load More Results';
+                loadMoreBtn.disabled = false;
+                // In a real app, you would append more results here
+            }, 1500);
+        });
+
+        // Alternative search suggestions
+        const alternativeSearchBtns = document.querySelectorAll('#noResultsState button');
+        alternativeSearchBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const query = btn.textContent;
+                searchInput.value = query;
+                performSearch(query);
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get search query from URL if present
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+            if (query) {
+                searchInput.value = query;
+                performSearch(query);
+            }
+            
+            // Load recent searches
+            loadRecentSearches();
+        });
+
+        // Add click handlers for video cards
+        document.querySelectorAll('.group.cursor-pointer').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'A' && !e.target.closest('a')) {
+                    const title = card.querySelector('h3').textContent;
+                    const creator = card.querySelector('.text-text-secondary').textContent;
+                    const thumbnail = card.querySelector('img').src;
+                    
+                    // Save to viewing history
+                    let history = JSON.parse(localStorage.getItem('viewingHistory') || '[]');
+                    history.unshift({ title, creator, thumbnail, timestamp: Date.now() });
+                    history = history.slice(0, 10);
+                    localStorage.setItem('viewingHistory', JSON.stringify(history));
+                    
+                    window.location.href = 'video_player.html';
+                }
+            });
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
